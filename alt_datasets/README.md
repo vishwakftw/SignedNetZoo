@@ -1,7 +1,7 @@
 # Alternate Datasets
 The current directory has a list of various alternative signed directed social network graphs:
 
-***Readme:*** Running the script `extract_graphs.py` will download, process and export pickles of each social network graph into `/pickles`.
+***Readme:*** All the datasets and pickles have been ignored in the repository. Running the script `extract_graphs.py` will download, process and export pickles of each social network graph into `/pickles`.
 
 - **[Bitcoin OTC Trust Weighted Signed Network:](https://snap.stanford.edu/data/soc-sign-bitcoin-otc.html)** This is who-trusts-whom network of people who trade using Bitcoin on a platform called Bitcoin OTC. Since Bitcoin users are anonymous, there is a need to maintain a record of users' reputation to prevent transactions with fraudulent and risky users. Members of Bitcoin OTC rate other members in a scale of -10 (total distrust) to +10 (total trust) in steps of 1. This is the first explicit weighted signed directed network available for research.
 
