@@ -1,0 +1,5 @@
+*/**/*.gpickle
+*/**/*.gz
+
+# Python files
+__pycache__/
