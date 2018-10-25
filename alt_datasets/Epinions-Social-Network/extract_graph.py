@@ -5,7 +5,7 @@ import pickle
 # Import dataset as a Pandas DataFrame, check edge count.
 df = pd.read_table("soc-sign-epinions.txt.gz", compression='gzip', sep='\t', skiprows=(0,1,2,3), header=None)
 x = len(df)
-print("-- Extracted and imported datset.")
+print("-- Extracted and imported dataset.")
 
 # Format of each row: SOURCE, TARGET, SIGN.
 

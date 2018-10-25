@@ -23,19 +23,25 @@ def download_file(path, link):
 
 def extract_file(path, link):
     filename = basename(link)
-    local_path = path + "/" + filename
+    pickle_path = "pickles/" + filename.split('.')[0] + ".gpickle"
+    if os.path.isfile(pickle_path):
+        print("- Pickle already extracted.")
+        return
     print("- Processing and Extracting graph: " + filename + "...")
     os.chdir(path)
     os.system("python extract_graph.py")
     os.chdir("..")
+    return
 
 
 def main():
     for index, path in enumerate(folder_paths):
-        print("--------------------------------------")
+        print("----------------------------------------")
         print(path)
-        print("--------------------------------------")
+        print("----------------------------------------")
         download_file(path, dl_links[index])
         extract_file(path, dl_links[index])
+    print("----------------------------------------")
+
 
 main()

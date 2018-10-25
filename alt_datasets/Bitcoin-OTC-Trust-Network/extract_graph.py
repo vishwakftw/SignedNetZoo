@@ -5,7 +5,7 @@ import pickle
 # Import dataset as a Pandas DataFrame, check edge count.
 df = pd.read_table("soc-sign-bitcoinotc.csv.gz", compression='gzip', sep=',', header=None)
 x = len(df)
-print("-- Extracted and imported datset.")
+print("-- Extracted and imported dataset.")
 
 # Format of each row: SOURCE, TARGET, RATING, TIME.
 # Removing the TIME column.

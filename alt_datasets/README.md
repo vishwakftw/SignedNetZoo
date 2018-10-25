@@ -15,4 +15,4 @@ The current directory has a list of various alternative signed directed social n
 
    Dataset Download Link: [wiki-RfA.txt.gz](https://snap.stanford.edu/data/wiki-RfA.txt.gz)
 
-The pickled graph objects of each of these dataset is stored in `/pickles`. These can be imported into a program using `G = nx.read_gpickle("pth_to_pickle")`.
+The pickled graph objects of each of these dataset is stored in `/pickles`. These can be imported into any specific program using `G = nx.read_gpickle("pth_to_pickle")`.
