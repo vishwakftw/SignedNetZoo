@@ -41,30 +41,33 @@ class Bitcoin(object):
     def _get_graph(self):        
         print("- Obtaining Networkx Graph...")
 
-        print("- Pre-processing...")
-        # Import dataset as a Pandas DataFrame, check edge count.
-        df = pd.read_table(os.path.join(self.raw_path, os.path.basename(self.url)),
-                           compression='gzip', sep=',', header=None)
-        x = len(df)
+        if os.path.isfile(os.path.join(self.proc_path, self.pickle_name)):
+            print("- Graph ready.")
+        else:
+            print("- Pre-processing...")
+            # Import dataset as a Pandas DataFrame, check edge count.
+            df = pd.read_table(os.path.join(self.raw_path, os.path.basename(self.url)),
+                               compression='gzip', sep=',', header=None)
+            x = len(df)
 
-        # Format of each row: SOURCE, TARGET, RATING, TIME.
-        # Removing the TIME column.
-        del df[3]
+            # Format of each row: SOURCE, TARGET, RATING, TIME.
+            # Removing the TIME column.
+            del df[3]
 
-        # Convert DataFrame to a list of tuples.
-        tuples = [tuple(x) for x in df.values]
+            # Convert DataFrame to a list of tuples.
+            tuples = [tuple(x) for x in df.values]
 
-        print("- Pre-processing done.")
+            print("- Pre-processing done.")
 
-        # Build a directed graph.
-        G = nx.DiGraph()
-        G.add_weighted_edges_from(tuples)
+            # Build a directed graph.
+            G = nx.DiGraph()
+            G.add_weighted_edges_from(tuples)
 
-        if x != G.number_of_edges():
-            raise ValueError("Error in parsing.")
+            if x != G.number_of_edges():
+                raise ValueError("Error in parsing.")
 
-        nx.write_gpickle(G, os.path.join(self.proc_path, self.pickle_name))
-        print("- Graph saved.")
+            nx.write_gpickle(G, os.path.join(self.proc_path, self.pickle_name))
+            print("- Graph saved.")
 
     @property
     def graph(self):

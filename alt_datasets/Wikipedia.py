@@ -40,54 +40,57 @@ class Wikipedia(object):
     def _get_graph(self):
         print("- Obtaining Networkx Graph...")
 
-        print("- Pre-processing...")
-        # Import dataset as a Pandas DataFrame.
-        df = pd.read_table(os.path.join(self.raw_path, os.path.basename(self.url)),
-                           compression='gzip', sep='\n', header=None)
-        sequence = df[0].tolist()
-        assert len(sequence) == 1387925, "Error in download."
+        if os.path.isfile(os.path.join(self.proc_path, self.pickle_name)):
+            print("- Graph ready.")
+        else:
+            print("- Pre-processing...")
+            # Import dataset as a Pandas DataFrame.
+            df = pd.read_table(os.path.join(self.raw_path, os.path.basename(self.url)),
+                               compression='gzip', sep='\n', header=None)
+            sequence = df[0].tolist()
+            assert len(sequence) == 1387925, "Error in download."
 
-        # Isolate SOURCE, TARGET, VOTE.
-        src = []
-        tgt = []
-        vot = []
-        for index, element in enumerate(sequence):
-            if index % 7 == 0:
-                src.append(element[4:])
-            elif index % 7 == 1:
-                tgt.append(element[4:])
-            elif index % 7 == 2:
-                vot.append(int(element[4:]))
+            # Isolate SOURCE, TARGET, VOTE.
+            src = []
+            tgt = []
+            vot = []
+            for index, element in enumerate(sequence):
+                if index % 7 == 0:
+                    src.append(element[4:])
+                elif index % 7 == 1:
+                    tgt.append(element[4:])
+                elif index % 7 == 2:
+                    vot.append(int(element[4:]))
 
-        assert len(src) == len(tgt) == len(vot) == 198275, "Error in download."
+            assert len(src) == len(tgt) == len(vot) == 198275, "Error in download."
 
-        # Create hashmap for individuals across both SOURCE and TARGET.
-        src_set, tgt_set = set(src), set(tgt)
+            # Create hashmap for individuals across both SOURCE and TARGET.
+            src_set, tgt_set = set(src), set(tgt)
 
-        assert len(src_set) == 10417, "Error in parsing."
-        assert len(tgt_set) == 3497, "Error in parsing."
-        assert not tgt_set < src_set, "Error in parsing."
+            assert len(src_set) == 10417, "Error in parsing."
+            assert len(tgt_set) == 3497, "Error in parsing."
+            assert not tgt_set < src_set, "Error in parsing."
 
-        hashmap = list(src_set | tgt_set)
+            hashmap = list(src_set | tgt_set)
 
-        # Eliminate empty users and '0' links as we add to final list.
-        tuples = []
-        for index, source in enumerate(src):
-            if source == '':
-                continue
-            elif vot[index] == 0:
-                continue
-            s, t, v = hashmap.index(source), hashmap.index(tgt[index]), vot[index]
-            tuples.append((s, t, v))
-        print("- Pre-processing done.")
+            # Eliminate empty users and '0' links as we add to final list.
+            tuples = []
+            for index, source in enumerate(src):
+                if source == '':
+                    continue
+                elif vot[index] == 0:
+                    continue
+                s, t, v = hashmap.index(source), hashmap.index(tgt[index]), vot[index]
+                tuples.append((s, t, v))
+            print("- Pre-processing done.")
 
-        # Build a directed graph.
-        G = nx.DiGraph()
-        G.add_weighted_edges_from(tuples)
+            # Build a directed graph.
+            G = nx.DiGraph()
+            G.add_weighted_edges_from(tuples)
 
-        print("- Networkx graph created, saving...")
-        nx.write_gpickle(G, os.path.join(self.proc_path, self.pickle_name))
-        print("- Graph saved.")
+            print("- Networkx graph created, saving...")
+            nx.write_gpickle(G, os.path.join(self.proc_path, self.pickle_name))
+            print("- Graph saved.")
 
     @property
     def graph(self):
