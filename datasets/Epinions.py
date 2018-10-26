@@ -6,7 +6,7 @@ import pandas as pd
 import networkx as nx
 
 
-class Epinions(object): 
+class Epinions(object):
     """
     Class wrapping the Epinions social network dataset.
 

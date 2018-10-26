@@ -6,7 +6,7 @@ import pandas as pd
 import networkx as nx
 
 
-class Wikipedia(object): 
+class Wikipedia(object):
     """
     Class wrapping the Wikipedia Requests for Adminship dataset.
 
