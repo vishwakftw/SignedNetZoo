@@ -1,24 +1,25 @@
-from subprocess import call
-from utils import download_file
+from .utils import download_file
 
 import os
 import errno
 import pandas as pd
 import networkx as nx
 
-class SlashdotZoo(object):
+
+class Bitcoin(object):
     """
-    Class wrapping the Slashdot Zoo signed social network dataset.
+    Class wrapping the Bitcoin OTC Trust Weighted Signed Network.
 
     Arguments:
         root : Root folder to save the raw and processed datasets.
                Default: current directory ('.')
+
     """
 
-    raw = "Slashdot-Zoo/raw"
-    processed = "Slashdot-Zoo/processed"
-    url = "http://konect.cc/files/download.tsv.slashdot-zoo.tar.bz2"
-    pickle_name = "slashdot-zoo.gpickle"
+    raw = "Bitcoin-OTC-Trust-Network/raw"
+    processed = "Bitcoin-OTC-Trust-Network/processed"
+    url = "https://snap.stanford.edu/data/soc-sign-bitcoinotc.csv.gz"
+    pickle_name = "soc-sign-bitcoinotc.gpickle"
 
     def __init__(self, root='.'):
         self.root = root
@@ -45,12 +46,14 @@ class SlashdotZoo(object):
         else:
             print("- Pre-processing...")
             # Import dataset as a Pandas DataFrame, check edge count.
-            call(['tar', 'xvjf', os.path.join(self.raw_path, os.path.basename(self.url)), '-C', self.raw_path])
-            df = pd.read_table(os.path.join(self.raw_path, 'slashdot-zoo/out.matrix'),
-                               sep=' ', skiprows=(0, 1), header=None)
+            df = pd.read_table(os.path.join(self.raw_path, os.path.basename(self.url)),
+                               compression='gzip', sep=',', header=None)
             x = len(df)
 
-            # Format of each row: SOURCE, TARGET, SIGN.
+            # Format of each row: SOURCE, TARGET, RATING, TIME.
+            # Removing the TIME column.
+            del df[3]
+
             # Convert DataFrame to a list of tuples.
             tuples = [tuple(x) for x in df.values]
 
@@ -59,7 +62,6 @@ class SlashdotZoo(object):
             # Build a directed graph.
             G = nx.DiGraph()
             G.add_weighted_edges_from(tuples)
-            print("- Networkx graph created, saving...")
 
             if x != G.number_of_edges():
                 raise ValueError("Error in parsing.")

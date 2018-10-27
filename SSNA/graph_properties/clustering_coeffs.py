@@ -1,4 +1,4 @@
-import graph_defs as gd
+from . import graph_defs as gd
 
 import numpy as np
 
