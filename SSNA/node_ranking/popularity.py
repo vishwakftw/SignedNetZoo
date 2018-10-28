@@ -1,5 +1,4 @@
 import networkx as nx
-from ..graph_properties import get_adjacency_matrix
 
 def fans_minus_freaks(G):
     """
