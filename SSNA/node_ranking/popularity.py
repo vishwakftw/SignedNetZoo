@@ -1,4 +1,4 @@
-import networkx as nx
+from ..graph_properties import get_adjacency_matrix
 
 def fans_minus_freaks(G):
     """
@@ -14,28 +14,7 @@ def fans_minus_freaks(G):
     Returns:
         A list containing the FMF score for each node of the graph
     """
-    n = len(G.nodes)
-    fmf_arr = [0]*n
-    i = 0
-    for (u,v,w) in G.edges.data('weight'):
-        if(w > 0):
-            fmf_arr[v-1] += 1
-        elif(w < 0):
-            fmf_arr[v-1] -= 1
-    for a in fmf_arr:
-        print(a)
-    return fmf_arr
-
-
-'''
-# sample
-G = nx.Graph()
-
-G.add_edge(1, 2, weight = 1)
-G.add_edge(1, 4, weight = -1)
-G.add_edge(3, 4, weight = -1)
-G.add_edge(5, 6, weight = 1)
-G.add_edge(1, 3, weight = -1)   #add/remove this to find the difference
-
-fans_minus_freaks(G)
-'''
+    adj_mat = get_adjacency_matrix(G).tocsr()
+    for i, j in zip(*adj_mat.nonzero()):
+        adj_mat[i, j] = 1 if adj_mat[i, j] > 0 else -1
+    return adj_mat.sum(axis=1)
