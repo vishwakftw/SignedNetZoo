@@ -2,6 +2,7 @@ from .utils import download_file
 
 import os
 import errno
+import random
 import pandas as pd
 import networkx as nx
 
@@ -13,7 +14,10 @@ class Bitcoin(object):
     Arguments:
         root : Root folder to save the raw and processed datasets.
                Default: current directory ('.')
-
+        split : Specify a number between 0 and 1. If `split` is not None, then two graphs are
+                created for train and test.`split` * number of edges are considered for
+                the training dataset, and (1 - `split`) * number of edges are considered
+                for the testing dataset. Default : None
     """
 
     raw = "Bitcoin-OTC-Trust-Network/raw"
@@ -21,10 +25,13 @@ class Bitcoin(object):
     url = "https://snap.stanford.edu/data/soc-sign-bitcoinotc.csv.gz"
     pickle_name = "soc-sign-bitcoinotc.gpickle"
 
-    def __init__(self, root='.'):
+    def __init__(self, root='.', split=None):
         self.root = root
         self.raw_path = os.path.join(self.root, self.raw)
         self.proc_path = os.path.join(self.root, self.processed)
+        self.split = split
+        if self.split is not None:
+            assert 0 < self.split < 1, "split argument out of range"
 
         try:
             os.makedirs(self.raw_path)
@@ -38,7 +45,7 @@ class Bitcoin(object):
         download_file(self.raw_path, self.url)
         self._get_graph()
 
-    def _get_graph(self):        
+    def _get_graph(self):
         print("- Obtaining Networkx Graph...")
 
         if os.path.isfile(os.path.join(self.proc_path, self.pickle_name)):
@@ -48,7 +55,6 @@ class Bitcoin(object):
             # Import dataset as a Pandas DataFrame, check edge count.
             df = pd.read_table(os.path.join(self.raw_path, os.path.basename(self.url)),
                                compression='gzip', sep=',', header=None)
-            x = len(df)
 
             # Format of each row: SOURCE, TARGET, RATING, TIME.
             # Removing the TIME column.
@@ -59,16 +65,37 @@ class Bitcoin(object):
 
             print("- Pre-processing done.")
 
-            # Build a directed graph.
-            G = nx.DiGraph()
-            G.add_weighted_edges_from(tuples)
+            if self.split is None:
+                print("- split is None, building one graph...")
 
-            if x != G.number_of_edges():
-                raise ValueError("Error in parsing.")
+                self._get_graph_impl(tuples)
 
-            nx.write_gpickle(G, os.path.join(self.proc_path, self.pickle_name))
-            print("- Graph saved.")
+                print("- Graph saved.")
+
+            else:
+                print("- split is {}, building two graphs...".format(self.split))
+
+                random.shuffle(tuples)
+                train_len = int(self.split * len(tuples))
+
+                self._get_graph_impl(tuples[: train_len], suffix='train')
+                self._get_graph_impl(tuples[train_len:], suffix='test')
+
+                print("- Both Graphs saved.")
+
+    def _get_graph_impl(self, tuples, suffix=''):
+        # Build a directed graph.
+        G = nx.DiGraph()
+        G.add_weighted_edges_from(tuples)
+        suffix = '.' + suffix
+
+        nx.write_gpickle(G, os.path.join(self.proc_path, self.pickle_name + suffix))
 
     @property
     def graph(self):
-        return nx.read_gpickle(os.path.join(self.proc_path, self.pickle_name))
+        if self.split is None:
+            return nx.read_gpickle(os.path.join(self.proc_path, self.pickle_name))
+
+        else:
+            return (nx.read_gpickle(os.path.join(self.proc_path, self.pickle_name + '.train')),
+                    nx.read_gpickle(os.path.join(self.proc_path, self.pickle_name + '.test')))

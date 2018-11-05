@@ -16,6 +16,7 @@ def gen_bar_updater(pbar):
 
     return bar_update
 
+
 def download_file(path, link):
     """
     Function to download a file from `link` and save to `path`.
