@@ -17,5 +17,3 @@ def constrained_bfs(graph_obj, marker_map, marker, weight, start):
             if adj_node not in marker_map and graph_obj[cur_node][adj_node]['weight'] == weight:
                 q.put(adj_node)
                 marker_map[adj_node] = marker
-
-
