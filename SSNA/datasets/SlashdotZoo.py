@@ -61,13 +61,16 @@ class SlashdotZoo(object):
             # Format of each row: SOURCE, TARGET, SIGN.
             # Convert DataFrame to a list of tuples.
             tuples = [tuple(x) for x in df.values]
+            node_set = set()
+            for tpl in tuples:
+                node_set.update(tpl[:2])
 
             print("- Pre-processing done.")
 
             if self.split is None:
                 print("- split is None, building one graph...")
 
-                self._get_graph_impl(tuples)
+                self._get_graph_impl(tuples, node_set)
 
                 print("- Graph saved.")
 
@@ -77,14 +80,15 @@ class SlashdotZoo(object):
                 random.shuffle(tuples)
                 train_len = int(self.split * len(tuples))
 
-                self._get_graph_impl(tuples[: train_len], suffix='train')
-                self._get_graph_impl(tuples[train_len:], suffix='test')
+                self._get_graph_impl(tuples[: train_len], node_set, suffix='train')
+                self._get_graph_impl(tuples[train_len:], node_set, suffix='test')
 
                 print("- Both Graphs saved.")
 
-    def _get_graph_impl(self, tuples, suffix=''):
+    def _get_graph_impl(self, tuples, node_set, suffix=''):
         # Build a directed graph.
         G = nx.DiGraph()
+        G.add_nodes_from(node_set)
         G.add_weighted_edges_from(tuples)
         suffix = '.' + suffix
 

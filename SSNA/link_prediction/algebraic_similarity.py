@@ -20,13 +20,13 @@ def adjacency_dim_reduce(G, dim, required_links):
     Returns:
         List of {+1, -1} based on the properties of the graph
     """
-    A = get_adjacency_matrix(G)
+    A, _ = get_adjacency_matrix(G)
+    A = A.astype(float)
     u, s, v = sspl.svds(A, k=dim)
-    u = u.transpose()
     preds = []
     for pair in required_links:
         i, j = pair
-        entry_val = sum([s[k] * u[k][i] * v[k][j] for k in range(dim)])
+        entry_val = sum([s[k] * u[i, k] * v[k, j] for k in range(dim)])
         if entry_val >= 0:
             preds.append(1)
         else:
@@ -52,12 +52,12 @@ def symmetric_adjacency_dim_reduce(G, dim, required_links):
         List of {+1, -1} based on the properties of the graph
     """
     A = get_symmetric_adjacency_matrix(G)
+    A = A.astype(float)
     w, v = sspl.eigsh(A, k=dim)
-    v = v.transpose()
     preds = []
     for pair in required_links:
         i, j = pair
-        entry_val = sum([s[k] * v[k][i] * v[k][j] for k in range(dim)])
+        entry_val = sum([w[k] * v[i, k] * v[j, k] for k in range(dim)])
         if entry_val >= 0:
             preds.append(1)
         else:

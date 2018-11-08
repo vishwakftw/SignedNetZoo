@@ -86,7 +86,8 @@ def mult_trans_prediction(G, required_links, default=None):
         edges_majority = sum(list(nx.get_edge_attributes(G, 'weight').values()))
 
     preds = []
-    A = get_adjacency_matrix(G)
+    A, _ = get_adjacency_matrix(G)
+    A = A.astype(float)
     sq_A = A * A
     for pair in required_links:
         if sq_A[pair[0], pair[1]] == 0:
@@ -126,7 +127,8 @@ def mult_trans_prediction_with_radius(G, required_links, default=None):
         edges_majority = sum(list(nx.get_edge_attributes(G, 'weight').values()))
 
     preds = []
-    A = get_adjacency_matrix(G)
+    A, _ = get_adjacency_matrix(G)
+    A = A.astype(float)
     radius = nx.radius(G)
     pow_A = None
     if radius == 1:
