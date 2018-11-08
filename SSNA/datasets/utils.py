@@ -50,3 +50,42 @@ def get_node_set_map(tuple_list):
     node_map = {node_name: idx for idx, node_name in enumerate(node_set)}
     tuples = [(node_map[src], node_map[dst], wgt) for src, dst, wgt in tuple_list]
     return tuples, node_map
+
+
+def edges_are_same(a, b):
+    """
+    Function to check if two tuple elements (src, tgt, val) correspond
+    to the same directed edge (src, tgt).
+
+    Args:
+        tuple_elements : a = (src, val, val) and b = (src, val, val)
+
+    Returns:
+        True or False
+    """
+    if a[0:2] == b[0:2]:
+        return True
+    else:
+        return False
+
+def get_equivalent_edge(edges):
+    """
+    Function to obtain an equivalent directional edge between two nodes
+    which have multiple edges in between. Also, assesses if edge is rendered neutral.
+
+    Args:
+        edges : List of tuple objects (src, val, val) with same 'src' and 'tgt' values and varying 'val' values
+
+    Returns:
+        equivalent_edge : Tuple object which represents the equivalent edge between the given two nodes
+        valid : True or False, based on whether the edge is valid or rendered to become neutral
+    """
+    mean = 0
+    for edge in edges:
+        mean += edge[2]
+    if mean == 0:
+        return (edges[0][0], edges[0][1], 0), False
+    elif mean > 0:
+        return (edges[0][0], edges[0][1], 1), True
+    else:
+        return (edges[0][0], edges[0][1], -1), True
