@@ -1,4 +1,4 @@
-from .utils import download_file
+from .utils import download_file, get_node_set_map
 
 import os
 import errno
@@ -64,16 +64,14 @@ class WikiSigned(object):
                 src, tgt = map(int, edge[0].split())
                 val = edge[1]
                 tuples.append((src, tgt, val))
-            node_set = set()
-            for tpl in tuples:
-                node_set.update(tpl[:2])
+            tuples, node_map = get_node_set_map(tuples)
 
             print("- Pre-processing done.")
 
             if self.split is None:
                 print("- split is None, building one graph...")
 
-                self._get_graph_impl(tuples, node_set)
+                self._get_graph_impl(tuples, node_map.values())
 
                 print("- Graph saved.")
 
@@ -83,8 +81,8 @@ class WikiSigned(object):
                 random.shuffle(tuples)
                 train_len = int(self.split * len(tuples))
 
-                self._get_graph_impl(tuples[: train_len], node_set, suffix='train')
-                self._get_graph_impl(tuples[train_len:], node_set, suffix='test')
+                self._get_graph_impl(tuples[: train_len], node_map.values(), suffix='train')
+                self._get_graph_impl(tuples[train_len:], node_map.values(), suffix='test')
 
                 print("- Both Graphs saved.")
 
@@ -93,7 +91,8 @@ class WikiSigned(object):
         G = nx.DiGraph()
         G.add_nodes_from(node_set)
         G.add_weighted_edges_from(tuples)
-        suffix = '.' + suffix
+        if suffix != '':
+            suffix = '.' + suffix
 
         nx.write_gpickle(G, os.path.join(self.proc_path, self.pickle_name + suffix))
 
