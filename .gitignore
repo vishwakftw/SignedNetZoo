@@ -1,10 +1,12 @@
 */**/*.gpickle
 */**/*.gz
+*/**/*.zip
 data/
 
 # Python files
 __pycache__/
 .pytest_cache/
+.ipynb_checkpoints
 
 # Build files
 build/

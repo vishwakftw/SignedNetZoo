@@ -19,3 +19,5 @@ The current directory has a list of various signed directed social network graph
 - **[Epinions Social Network:](https://snap.stanford.edu/data/soc-sign-epinions.html)** This is who-trust-whom online social network of a a general consumer review site Epinions.com. Members of the site can decide whether to ''trust'' each other. All the trust relationships interact and form the Web of Trust which is then combined with review ratings to determine which reviews are shown to the user.
 
 - **[Wikipedia Requests for Adminship:](https://snap.stanford.edu/data/wiki-RfA.html)** For a Wikipedia editor to become an administrator, a request for adminship (RfA) must be submitted, either by the candidate or by another community member. Subsequently, any Wikipedia member may cast a supporting, neutral, or opposing vote.
+
+- **[WikiSigned:](http://konect.uni-koblenz.de/networks/wikisigned-k2)** This undirected signed network contains interpreted interactions between the users of the English Wikipedia that have edited pages about politics. The dataset is based on a set of 563 articles from the politics domain of the English Wikipedia.
