@@ -1,5 +1,6 @@
 from ..graph_properties import get_adjacency_matrix
 
+
 def fans_minus_freaks(G):
     """
     Function to compute the fans-minus-freaks score for a signed graph

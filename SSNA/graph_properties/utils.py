@@ -1,6 +1,6 @@
 try:
     import queue as Queue
-except:
+except ImportError:
     import Queue
 
 

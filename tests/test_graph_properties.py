@@ -98,9 +98,11 @@ class TestBalanced(unittest.TestCase):
 
     def test_is_balanced(self):
         results_undir = []
-        expected_results = [(True, {'strength': 'strong', 'possible_split': (['E', 'D'], ['A', 'B', 'C'])}),
+        expected_results = [(True, {'strength': 'strong',
+                                    'possible_split': (['E', 'D'], ['A', 'B', 'C'])}),
                             (False, None),
-                            (True, {'strength': 'weak', 'possible_split': None})]
+                            (True, {'strength': 'weak',
+                                    'possible_split': None})]
         for i, graph in enumerate([self.balanced_strong_undir,
                                    self.unbalanced_undir,
                                    self.balanced_weak_undir]):
@@ -108,9 +110,17 @@ class TestBalanced(unittest.TestCase):
             self.assertEqual(result[0], expected_results[i][0])
             if expected_results[i][1] is not None:
                 self.assertEqual(result[1]['strength'], expected_results[i][1]['strength'])
-                self.assertEqual(result[1]['possible_split'], expected_results[i][1]['possible_split'])
+                self.assertEqual(result[1]['possible_split'],
+                                 expected_results[i][1]['possible_split'])
             else:
                 self.assertIsNone(result[1])
+            results_undir.append(result)
+
+        for i, graph in enumerate([self.balanced_strong_dir,
+                                   self.unbalanced_dir,
+                                   self.balanced_weak_dir]):
+            result = SSNA.graph_properties.is_balanced(graph, True)
+            self.assertEqual(result, results_undir[i])
 
 
 if __name__ == '__main__':

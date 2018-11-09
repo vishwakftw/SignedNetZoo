@@ -1,8 +1,5 @@
-from ..graph_properties import get_adjacency_matrix, get_absolute_diagonal_degree_matrix
-
-import numpy as np
 import networkx as nx
-import scipy.sparse as ssp
+
 
 def pagerank(G, signed=True, symmetric=False, alpha=0.8, max_iter=100):
     """
@@ -24,7 +21,7 @@ def pagerank(G, signed=True, symmetric=False, alpha=0.8, max_iter=100):
     # By default, the graph is assumed to be signed and asymmetric
     if not signed:
         for u, v, d in G.edges(data=True):
-            w['weight'] = abs(w['weight'])
+            G[u][v]['weight'] = abs(G[u][v]['weight'])
     if symmetric:
         nodes = list(G.nodes())
         for i in range(len(nodes)):
@@ -38,6 +35,7 @@ def pagerank(G, signed=True, symmetric=False, alpha=0.8, max_iter=100):
                         G.add_edge(nodes[j], nodes[i], weight=G[nodes[i]][nodes[j]]['weight'])
 
     return nx.link_analysis.pagerank_scipy(G, alpha=alpha, max_iter=max_iter)
+
 
 def negativerank(G, beta, alpha=0.8, max_iter=100):
     """

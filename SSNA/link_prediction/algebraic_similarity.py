@@ -2,6 +2,7 @@ from ..graph_properties import get_adjacency_matrix, get_symmetric_adjacency_mat
 
 import scipy.sparse.linalg as sspl
 
+
 def adjacency_dim_reduce(G, dim, required_links):
     """
     Function to get predictions for the parity of a link via dimensionality
@@ -31,6 +32,7 @@ def adjacency_dim_reduce(G, dim, required_links):
         else:
             preds.append(-1)
     return preds
+
 
 def symmetric_adjacency_dim_reduce(G, dim, required_links):
     """

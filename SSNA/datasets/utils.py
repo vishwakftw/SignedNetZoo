@@ -29,7 +29,8 @@ def download_file(path, link):
     if os.path.isfile(local_path):
         print("- File already downloaded.")
         return
-    urllib.request.urlretrieve(link, local_path, reporthook=gen_bar_updater(tqdm(unit='B', unit_scale=True)))
+    urllib.request.urlretrieve(link, local_path,
+                               reporthook=gen_bar_updater(tqdm(unit='B', unit_scale=True)))
 
 
 def get_node_set_map(tuple_list):
@@ -68,17 +69,21 @@ def edges_are_same(a, b):
     else:
         return False
 
+
 def get_equivalent_edge(edges):
     """
     Function to obtain an equivalent directional edge between two nodes
     which have multiple edges in between. Also, assesses if edge is rendered neutral.
 
     Args:
-        edges : List of tuple objects (src, val, val) with same 'src' and 'tgt' values and varying 'val' values
+        edges : List of tuple objects (src, val, val)
+                with same 'src' and 'tgt' values and varying 'val' values
 
     Returns:
-        equivalent_edge : Tuple object which represents the equivalent edge between the given two nodes
-        valid : True or False, based on whether the edge is valid or rendered to become neutral
+        equivalent_edge : Tuple object which represents the equivalent edge between
+                          the given two nodes
+        valid : True or False, based on whether the edge is valid or rendered to
+                become neutral
     """
     mean = 0
     for edge in edges:

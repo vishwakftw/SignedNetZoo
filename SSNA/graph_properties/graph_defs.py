@@ -2,6 +2,7 @@ import networkx as nx
 import numpy as np
 import scipy.sparse as ssp
 
+
 def get_adjacency_matrix(graph_obj, meta_data=False):
     """
     This function returns a n x n adjacency matrix given a networkx graph object.
@@ -27,6 +28,7 @@ def get_adjacency_matrix(graph_obj, meta_data=False):
         metas['average_links'] = adj_mat.getnnz() / adj_mat.shape[0]
     return (adj_mat, metas)
 
+
 def get_absolute_adjacency_matrix(graph_obj):
     """
     This function returns a n x n adjacency matrix given a networkx graph object, where the
@@ -41,6 +43,7 @@ def get_absolute_adjacency_matrix(graph_obj):
     adj_mat, _ = get_adjacency_matrix(graph_obj, False)
     adj_mat = abs(adj_mat)
     return adj_mat
+
 
 def get_symmetric_adjacency_matrix(graph_obj):
     """
@@ -57,6 +60,7 @@ def get_symmetric_adjacency_matrix(graph_obj):
     adj_mat_t = adj_mat.transpose()
     return adj_mat + adj_mat_t
 
+
 def get_absolute_symmetric_adjacency_matrix(graph_obj):
     """
     This function returns a n x n given a networkx graph object, which is the sum of the
@@ -72,6 +76,7 @@ def get_absolute_symmetric_adjacency_matrix(graph_obj):
     abs_adj_mat_t = abs_adj_mat.transpose()
     return abs_adj_mat + abs_adj_mat_t
 
+
 def get_absolute_diagonal_degree_matrix(graph_obj):
     """
     This function returns a diagonal matrix D which is the defined as
@@ -86,6 +91,7 @@ def get_absolute_diagonal_degree_matrix(graph_obj):
     abs_adj_mat = get_absolute_adjacency_matrix(graph_obj)
     diag_entries = np.array(abs_adj_mat.sum(axis=1)).reshape(-1)
     return ssp.coo_matrix(np.diag(diag_entries))
+
 
 def get_absolute_symmetric_diagonal_degree_matrix(graph_obj):
     """

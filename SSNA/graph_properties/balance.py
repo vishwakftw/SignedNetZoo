@@ -3,6 +3,7 @@ from networkx.algorithms import bipartite
 
 import networkx as nx
 
+
 # check if a graph is balanced
 def is_balanced(graph_obj, meta_data=False):
     """
@@ -33,7 +34,6 @@ def is_balanced(graph_obj, meta_data=False):
             constrained_bfs(undirected_graph_obj, node_labels, cur_label, 1, node)
             cur_label += 1
 
-
     num_labels = cur_label
 
     set_graph = nx.Graph()
@@ -50,7 +50,7 @@ def is_balanced(graph_obj, meta_data=False):
                 balanced = False
                 break
         if undirected_graph_obj[f][s]['weight'] == -1:
-            set_graph.add_edge(node_labels[f], node_labels[s]);
+            set_graph.add_edge(node_labels[f], node_labels[s])
             if node_labels[f] == node_labels[s]:
                 balanced = False
                 break

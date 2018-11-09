@@ -6,6 +6,7 @@ import shutil
 import unittest
 import networkx as nx
 
+
 class TestDataset(unittest.TestCase):
 
     @staticmethod
@@ -52,6 +53,7 @@ class TestDataset(unittest.TestCase):
 
     def test_wikisigned(self):
         self._test_dataset(self, 'WikiSigned')
+
 
 if __name__ == '__main__':
     unittest.main()

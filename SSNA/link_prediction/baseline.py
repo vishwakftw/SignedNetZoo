@@ -3,6 +3,7 @@ from ..graph_properties import get_adjacency_matrix
 import networkx as nx
 import scipy.sparse as ssp
 
+
 def uninformative_prediction(G, required_links):
     """
     Function to predict links in an uninformative manner, i.e., the majority
@@ -23,6 +24,7 @@ def uninformative_prediction(G, required_links):
         return [1 for _ in required_links]
     else:
         return [-1 for _ in required_links]
+
 
 def undirected_prediction(G, required_links, default=None):
     """
@@ -62,8 +64,9 @@ def undirected_prediction(G, required_links, default=None):
             elif default == 'negative':
                 preds.append(-1)
             else:
-                raise ValueError("Invalid argument for default") 
+                raise ValueError("Invalid argument for default")
     return preds
+
 
 def mult_trans_prediction(G, required_links, default=None):
     """
@@ -101,10 +104,11 @@ def mult_trans_prediction(G, required_links, default=None):
             elif default == 'negative':
                 preds.append(-1)
             else:
-                raise ValueError("Invalid argument for default") 
+                raise ValueError("Invalid argument for default")
         else:
             preds.append(sq_A[pair[0], pair[1]])
     return preds
+
 
 def mult_trans_prediction_with_radius(G, required_links, default=None):
     """
@@ -138,7 +142,7 @@ def mult_trans_prediction_with_radius(G, required_links, default=None):
         while radius - 2 > 0:
             pow_A = pow_A * A
             radius -= 1
-    
+
     for pair in required_links:
         if pow_A[pair[0], pair[1]] == 0:
             if default is None:
@@ -151,7 +155,7 @@ def mult_trans_prediction_with_radius(G, required_links, default=None):
             elif default == 'negative':
                 preds.append(-1)
             else:
-                raise ValueError("Invalid argument for default") 
+                raise ValueError("Invalid argument for default")
         else:
             preds.append(pow_A[pair[0], pair[1]])
     return preds

@@ -54,7 +54,8 @@ class SlashdotZoo(object):
         else:
             print("- Pre-processing...")
             # Import dataset as a Pandas DataFrame, check edge count.
-            call(['tar', 'xvjf', os.path.join(self.raw_path, os.path.basename(self.url)), '-C', self.raw_path])
+            call(['tar', 'xvjf', os.path.join(self.raw_path, os.path.basename(self.url)),
+                  '-C', self.raw_path])
             df = pd.read_table(os.path.join(self.raw_path, 'slashdot-zoo/out.matrix'),
                                sep=' ', skiprows=(0, 1), header=None)
 
