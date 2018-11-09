@@ -1,8 +1,9 @@
-from .utils import download_file, get_node_set_map, edges_are_same, get_equivalent_edge
+from utils import download_file, get_node_set_map, edges_are_same, get_equivalent_edge
 
 import os
 import errno
 import random
+import zipfile
 import pandas as pd
 import networkx as nx
 
@@ -22,7 +23,7 @@ class Twitter(object):
 
     raw = "Twitter-Sentiment140/raw"
     processed = "Twitter-Sentiment140/processed"
-    url = "https://www.kaggle.com/kazanova/sentiment140/downloads/sentiment140.zip"
+    url = "http://cs.stanford.edu/people/alecmgo/trainingandtestdata.zip"
     pickle_name = "tweets-s140.gpickle"
 
     def __init__(self, root='.', split=None):
@@ -53,8 +54,11 @@ class Twitter(object):
         else:
             print("- Pre-processing...")
             # Import dataset as a Pandas DataFrame.
-            df = pd.read_table(os.path.join(self.raw_path, os.path.basename(self.url)),
-                               delimiter=',', encoding='latin-1', compression='zip', header=None)
+            zip_ref = zipfile.ZipFile(os.path.join(self.raw_path, os.path.basename(self.url)))
+            zip_ref.extractall(self.raw_path)
+            zip_ref.close()
+            df = pd.read_table(os.path.join(self.raw_path, 'training.1600000.processed.noemoticon.csv'),
+                               delimiter=',', encoding='latin-1', header=None)
 
             biased_dataframe = df.loc[df[0] != 2]
 
