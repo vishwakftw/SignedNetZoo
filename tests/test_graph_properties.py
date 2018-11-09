@@ -75,5 +75,43 @@ class TestClusteringCoeffs(unittest.TestCase):
             self.assertTrue(-1 <= rscc <= 1)
 
 
+class TestBalanced(unittest.TestCase):
+
+    def setUp(self):
+        self.balanced_strong_undir = nx.Graph()
+        self.balanced_strong_dir = nx.DiGraph()
+        edges = [('A', 'B', 1), ('A', 'C', 1), ('A', 'E', -1), ('A', 'D', -1), ('D', 'E', 1)]
+        self.balanced_strong_undir.add_weighted_edges_from(edges)
+        self.balanced_strong_dir.add_weighted_edges_from(edges)
+
+        self.unbalanced_undir = nx.Graph()
+        self.unbalanced_dir = nx.DiGraph()
+        edges = [('A', 'B', 1), ('A', 'C', 1), ('B', 'C', -1)]
+        self.unbalanced_undir.add_weighted_edges_from(edges)
+        self.unbalanced_dir.add_weighted_edges_from(edges)
+
+        self.balanced_weak_undir = nx.Graph()
+        self.balanced_weak_dir = nx.DiGraph()
+        edges = [('A', 'B', -1), ('B', 'C', -1), ('C', 'D', -1), ('D', 'A', 1), ('B', 'D', -1)]
+        self.balanced_weak_undir.add_weighted_edges_from(edges)
+        self.balanced_weak_dir.add_weighted_edges_from(edges)
+
+    def test_is_balanced(self):
+        results_undir = []
+        expected_results = [(True, {'strength': 'strong', 'possible_split': (['E', 'D'], ['A', 'B', 'C'])}),
+                            (False, None),
+                            (True, {'strength': 'weak', 'possible_split': None})]
+        for i, graph in enumerate([self.balanced_strong_undir,
+                                   self.unbalanced_undir,
+                                   self.balanced_weak_undir]):
+            result = SSNA.graph_properties.is_balanced(graph, True)
+            self.assertEqual(result[0], expected_results[i][0])
+            if expected_results[i][1] is not None:
+                self.assertEqual(result[1]['strength'], expected_results[i][1]['strength'])
+                self.assertEqual(result[1]['possible_split'], expected_results[i][1]['possible_split'])
+            else:
+                self.assertIsNone(result[1])
+
+
 if __name__ == '__main__':
     unittest.main()
