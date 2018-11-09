@@ -1,4 +1,4 @@
-from .utils import download_file, get_node_set_map
+from .utils import download_file, get_node_set_map, edges_are_same, get_equivalent_edge
 
 import os
 import errno
@@ -56,7 +56,7 @@ class Twitter(object):
             df = pd.read_table(os.path.join(self.raw_path, os.path.basename(self.url)),
                                delimiter=',', encoding='latin-1', compression='zip', header=None)
 
-            biased_dataframe = base_dataframe.loc[df[0] != 2]
+            biased_dataframe = df.loc[df[0] != 2]
 
             tweets = biased_dataframe[5].values
             uni = []
@@ -103,11 +103,10 @@ class Twitter(object):
             tgt_users = [x[1] for x in uni_list]
             src_users_set = set(src_users)
             tgt_users_set = set(tgt_users)
-            intersection = src_users_set.intersection(tgt_users_set)
 
             user_cluster = src_users_set.union(tgt_users_set)
             user_list = list(user_cluster)
-            hashmap = {user:index for index, user in enumerate(user_list)}
+            hashmap = {user: index for index, user in enumerate(user_list)}
 
             init_tuples = []
             for row in uni_list:
@@ -117,9 +116,6 @@ class Twitter(object):
                     v = 1
                 s, t = hashmap[row[0]], hashmap[row[1]]
                 init_tuples.append((s, t, v))
-
-            edges = [(x,y) for (x,y,z) in init_tuples]
-            distinct_edges = set(edges)
 
             init_tuples.sort(key=lambda x: x[0]*1000000 + x[1])
             tuples = []
@@ -150,7 +146,6 @@ class Twitter(object):
                     tuples.append(equivalent_edge)
             else:
                 tuples.append(prev_edge)
-
 
             print("- Pre-processing done.")
 
@@ -183,7 +178,6 @@ class Twitter(object):
             suffix = '.' + suffix
 
         nx.write_gpickle(G, os.path.join(self.proc_path, self.pickle_name + suffix))
-
 
     @property
     def graph(self):

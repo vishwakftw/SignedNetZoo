@@ -1,3 +1,4 @@
+from subprocess import call
 from .utils import download_file, get_node_set_map
 
 import os
@@ -22,7 +23,7 @@ class WikiSigned(object):
 
     raw = "WikiSigned-Social-Network/raw"
     processed = "WikiSigned-Social-Network/processed"
-    url = "https://dl6.volafile.org/download/BlL3fT_CZ9F_m/WikiSigned.tsv"
+    url = "http://konect.cc/files/download.tsv.wikisigned-k2.tar.bz2"
     pickle_name = "wiki-signed.gpickle"
 
     def __init__(self, root='.', split=None):
@@ -53,8 +54,11 @@ class WikiSigned(object):
         else:
             print("- Pre-processing...")
             # Import dataset as a Pandas DataFrame, check edge count.
-            df = pd.read_table(os.path.join(self.raw_path, os.path.basename(self.url)),
-                               sep='\t', index_col=False, header=None)
+            call(['tar', 'xvjf', os.path.join(self.raw_path, os.path.basename(self.url)),
+                  '-C', self.raw_path])
+            df = pd.read_table(os.path.join(self.raw_path, 'wikisigned-k2/out.wikisigned-k2'),
+                               sep='\t', index_col=False, header=None, usecols=[0, 1],
+                               skiprows=1)
 
             # Format of each row: SOURCE<space>TARGET, SIGN.
             # Convert DataFrame to a list of tuples.
