@@ -1,4 +1,4 @@
-from utils import download_file, get_node_set_map, edges_are_same, get_equivalent_edge
+from .utils import download_file, get_node_set_map, edges_are_same, get_equivalent_edge
 
 import os
 import errno

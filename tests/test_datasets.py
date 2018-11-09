@@ -48,6 +48,9 @@ class TestDataset(unittest.TestCase):
     def test_slashdotzoo(self):
         self._test_dataset(self, 'SlashdotZoo')
 
+    def test_twitter(self):
+        self._test_dataset(self, 'Twitter')
+
     def test_wikipedia(self):
         self._test_dataset(self, 'Wikipedia')
 
