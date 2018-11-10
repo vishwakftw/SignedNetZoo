@@ -21,7 +21,7 @@ class TestDataset(unittest.TestCase):
         n_nodes = G.number_of_nodes()
         shutil.rmtree(root)
 
-        for split in [0.7, 0.8, 0.9]:
+        for split in [0.7, 0.9]:
             # Now test with splits
             dataset = getattr(SignedNetZoo.datasets, dataset_name)(root=root, split=0.7)
             G_train, G_test = dataset.graph
