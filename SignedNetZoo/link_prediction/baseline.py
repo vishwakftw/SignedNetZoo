@@ -1,7 +1,6 @@
 from ..graph_properties import get_adjacency_matrix
 
 import networkx as nx
-import scipy.sparse as ssp
 
 
 def uninformative_prediction(G, required_links):

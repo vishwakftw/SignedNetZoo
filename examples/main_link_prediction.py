@@ -13,8 +13,7 @@ def get_algorithm_from_string(string):
     map_string = {'majority': 'uninformative_prediction',
                   'undirected': 'undirected_prediction',
                   'transitive': 'mult_trans_prediction',
-                  'transitive_radius': 'mult_trans_prediction_with_radius',
-                 }
+                  'transitive_radius': 'mult_trans_prediction_with_radius'}
     if string in map_string.keys():
         return getattr(snz.link_prediction.baseline, map_string[string])
     elif string == 'adjacency_dim_reduce':
@@ -57,10 +56,17 @@ for algo in args.algorithms:
             kwargs['dim'] = dim
             pred_func = partial(pred_func, **kwargs)
             pred_vals = np.array(pred_func(G=train, required_links=testing_edges))
-            print("Confusion matrix with {} and dim = {}\n{}"
-                  .format(algo, dim,
-                          snz.link_prediction.utils.confusion_matrix(actual_vals, pred_vals)))
+            confusion_matrix = snz.link_prediction.utils.confusion_matrix(actual_vals, pred_vals)
+            acc = (pred_vals == actual_vals).sum() / len(actual_vals)
+            recall = confusion_matrix['TP'] / (confusion_matrix['TP'] + confusion_matrix['FN'])
+            prcsn = confusion_matrix['TP'] / (confusion_matrix['TP'] + confusion_matrix['FP'])
+            print("Algorithm: {} and dim = {}\nAccuracy: {}\tRecall: {}\tPrecision: {}\n"
+                  .format(algo, dim, acc, recall, prcsn))
     else:
         pred_vals = np.array(pred_func(G=train, required_links=testing_edges))
-        print("Confusion matrix with {}\n{}"
-              .format(algo, snz.link_prediction.utils.confusion_matrix(actual_vals, pred_vals)))
+        confusion_matrix = snz.link_prediction.utils.confusion_matrix(actual_vals, pred_vals)
+        acc = (pred_vals == actual_vals).sum() / len(actual_vals)
+        recall = confusion_matrix['TP'] / (confusion_matrix['TP'] + confusion_matrix['FN'])
+        prcsn = confusion_matrix['TP'] / (confusion_matrix['TP'] + confusion_matrix['FP'])
+        print("Algorithm: {}\nAccuracy: {}\tRecall: {}\tPrecision: {}\n"
+              .format(algo, acc, recall, prcsn))

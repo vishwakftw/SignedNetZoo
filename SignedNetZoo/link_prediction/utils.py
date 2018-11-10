@@ -1,6 +1,3 @@
-import numpy as np
-
-
 def confusion_matrix(y_true, y_pred, pos_label=1):
     """
     Function to return a confusion matrix given a set of predictions

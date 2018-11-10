@@ -47,13 +47,13 @@ class TestGraphDefs(unittest.TestCase):
             self.assertFalse((mat != mat.T).todense().any())
 
     def test_get_diagonal_degree_matrix(self):
-        for graph in [self.G1, self.G2]:
-            mat = SignedNetZoo.graph_properties.get_absolute_diagonal_degree_matrix(graph)
+        for g in [self.G1, self.G2]:
+            mat = SignedNetZoo.graph_properties.get_absolute_diagonal_degree_matrix(g)
             self.assertTrue(all(mat.data > 0))
             self.assertEqual(mat.shape, (10, 10))
             self.assertTrue((np.diag(mat.diagonal()) == mat.todense()).all())
 
-            mat = SignedNetZoo.graph_properties.get_absolute_symmetric_diagonal_degree_matrix(graph)
+            mat = SignedNetZoo.graph_properties.get_absolute_symmetric_diagonal_degree_matrix(g)
             self.assertTrue(all(mat.data > 0))
             self.assertEqual(mat.shape, (10, 10))
             self.assertTrue((np.diag(mat.diagonal()) == mat.todense()).all())
@@ -66,13 +66,13 @@ class TestClusteringCoeffs(unittest.TestCase):
         self.G2 = nx.directed.random_uniform_k_out_graph(20, 5, self_loops=False)
 
     def test_clustering_coeff(self):
-        for graph in [self.G1, self.G2]:
-            cc = SignedNetZoo.graph_properties.clustering_coeffs.clustering_coeff(graph)
-            scc = SignedNetZoo.graph_properties.clustering_coeffs.sign_clustering_coeff(graph)
-            rscc = SignedNetZoo.graph_properties.clustering_coeffs.relative_sign_clustering_coeff(graph)
+        for g in [self.G1, self.G2]:
+            cc = SignedNetZoo.graph_properties.clustering_coeffs.clustering_coeff(g)
+            scc = SignedNetZoo.graph_properties.clustering_coeffs.sign_clustering_coeff(g)
+            rcc = SignedNetZoo.graph_properties.clustering_coeffs.relative_sign_clustering_coeff(g)
             self.assertTrue(cc >= 0)
             self.assertTrue(abs(scc) <= cc)
-            self.assertTrue(-1 <= rscc <= 1)
+            self.assertTrue(-1 <= rcc <= 1)
 
 
 class TestBalanced(unittest.TestCase):

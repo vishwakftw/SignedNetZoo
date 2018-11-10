@@ -52,9 +52,11 @@ class Twitter(object):
         if self.split is None and os.path.isfile(os.path.join(self.proc_path, self.pickle_name)):
             print("- Graph ready.")
         elif self.split is not None and (os.path.isfile(os.path.join(self.proc_path,
-                                         self.pickle_name + '.train_{}'.format(self.split))) or \
-             os.path.isfile(os.path.join(self.proc_path,
-                                         self.pickle_name + '.test_{}'.format(1 - self.split)))):
+                                                        self.pickle_name + '.train_{}'
+                                                        .format(self.split))) or
+                                         os.path.isfile(os.path.join(self.proc_path,
+                                                        self.pickle_name + '.test_{}'.
+                                                        format(1 - self.split)))):
             print("- Graphs ready.")
         else:
             print("- Pre-processing...")
@@ -62,7 +64,8 @@ class Twitter(object):
             zip_ref = zipfile.ZipFile(os.path.join(self.raw_path, os.path.basename(self.url)))
             zip_ref.extractall(self.raw_path)
             zip_ref.close()
-            df = pd.read_table(os.path.join(self.raw_path, 'training.1600000.processed.noemoticon.csv'),
+            df = pd.read_table(os.path.join(self.raw_path,
+                                            'training.1600000.processed.noemoticon.csv'),
                                delimiter=',', encoding='latin-1', header=None)
 
             biased_dataframe = df.loc[df[0] != 2]
