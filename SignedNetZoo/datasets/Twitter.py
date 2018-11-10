@@ -51,10 +51,10 @@ class Twitter(object):
 
         if self.split is None and os.path.isfile(os.path.join(self.proc_path, self.pickle_name)):
             print("- Graph ready.")
-        elif os.path.isfile(os.path.join(self.proc_path,
+        elif self.split is not None and (os.path.isfile(os.path.join(self.proc_path,
                                          self.pickle_name + '.train_{}'.format(self.split))) or \
              os.path.isfile(os.path.join(self.proc_path,
-                                         self.pickle_name + '.test_{}'.format(1 - self.split))):
+                                         self.pickle_name + '.test_{}'.format(1 - self.split)))):
             print("- Graphs ready.")
         else:
             print("- Pre-processing...")
