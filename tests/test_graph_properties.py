@@ -1,7 +1,7 @@
 """
 Testing graph properties for graphs.
 """
-import SSNA
+import SignedNetZoo
 import unittest
 import numpy as np
 import networkx as nx
@@ -16,7 +16,7 @@ class TestGraphDefs(unittest.TestCase):
     def test_get_adjacency_matrix(self):
         for graph in [self.G1, self.G2]:
             for meta_req in [True, False]:
-                ret_val = SSNA.graph_properties.get_adjacency_matrix(graph, meta_req)
+                ret_val = SignedNetZoo.graph_properties.get_adjacency_matrix(graph, meta_req)
                 self.assertIsInstance(ret_val, tuple)
                 if not meta_req:
                     self.assertIsNone(ret_val[1])
@@ -29,31 +29,31 @@ class TestGraphDefs(unittest.TestCase):
 
     def test_get_absolute_adjacency_matrix(self):
         for graph in [self.G1, self.G2]:
-            mat = SSNA.graph_properties.get_absolute_adjacency_matrix(graph)
+            mat = SignedNetZoo.graph_properties.get_absolute_adjacency_matrix(graph)
             self.assertTrue(all(mat.data > 0))
             self.assertEqual(mat.shape, (10, 10))
 
     def test_get_symmetric_adjacency_matrix(self):
         for graph in [self.G1, self.G2]:
-            mat = SSNA.graph_properties.get_symmetric_adjacency_matrix(graph)
+            mat = SignedNetZoo.graph_properties.get_symmetric_adjacency_matrix(graph)
             self.assertEqual(mat.shape, (10, 10))
             self.assertFalse((mat != mat.T).todense().any())
 
     def test_get_absolute_symmetric_adjacency_matrix(self):
         for graph in [self.G1, self.G2]:
-            mat = SSNA.graph_properties.get_absolute_symmetric_adjacency_matrix(graph)
+            mat = SignedNetZoo.graph_properties.get_absolute_symmetric_adjacency_matrix(graph)
             self.assertTrue(all(mat.data > 0))
             self.assertEqual(mat.shape, (10, 10))
             self.assertFalse((mat != mat.T).todense().any())
 
     def test_get_diagonal_degree_matrix(self):
         for graph in [self.G1, self.G2]:
-            mat = SSNA.graph_properties.get_absolute_diagonal_degree_matrix(graph)
+            mat = SignedNetZoo.graph_properties.get_absolute_diagonal_degree_matrix(graph)
             self.assertTrue(all(mat.data > 0))
             self.assertEqual(mat.shape, (10, 10))
             self.assertTrue((np.diag(mat.diagonal()) == mat.todense()).all())
 
-            mat = SSNA.graph_properties.get_absolute_symmetric_diagonal_degree_matrix(graph)
+            mat = SignedNetZoo.graph_properties.get_absolute_symmetric_diagonal_degree_matrix(graph)
             self.assertTrue(all(mat.data > 0))
             self.assertEqual(mat.shape, (10, 10))
             self.assertTrue((np.diag(mat.diagonal()) == mat.todense()).all())
@@ -67,9 +67,9 @@ class TestClusteringCoeffs(unittest.TestCase):
 
     def test_clustering_coeff(self):
         for graph in [self.G1, self.G2]:
-            cc = SSNA.graph_properties.clustering_coeffs.clustering_coeff(graph)
-            scc = SSNA.graph_properties.clustering_coeffs.sign_clustering_coeff(graph)
-            rscc = SSNA.graph_properties.clustering_coeffs.relative_sign_clustering_coeff(graph)
+            cc = SignedNetZoo.graph_properties.clustering_coeffs.clustering_coeff(graph)
+            scc = SignedNetZoo.graph_properties.clustering_coeffs.sign_clustering_coeff(graph)
+            rscc = SignedNetZoo.graph_properties.clustering_coeffs.relative_sign_clustering_coeff(graph)
             self.assertTrue(cc >= 0)
             self.assertTrue(abs(scc) <= cc)
             self.assertTrue(-1 <= rscc <= 1)
@@ -106,7 +106,7 @@ class TestBalanced(unittest.TestCase):
         for i, graph in enumerate([self.balanced_strong_undir,
                                    self.unbalanced_undir,
                                    self.balanced_weak_undir]):
-            result = SSNA.graph_properties.is_balanced(graph, True)
+            result = SignedNetZoo.graph_properties.is_balanced(graph, True)
             self.assertEqual(result[0], expected_results[i][0])
             if expected_results[i][1] is not None:
                 self.assertEqual(result[1]['strength'], expected_results[i][1]['strength'])
@@ -119,7 +119,7 @@ class TestBalanced(unittest.TestCase):
         for i, graph in enumerate([self.balanced_strong_dir,
                                    self.unbalanced_dir,
                                    self.balanced_weak_dir]):
-            result = SSNA.graph_properties.is_balanced(graph, True)
+            result = SignedNetZoo.graph_properties.is_balanced(graph, True)
             self.assertEqual(result, results_undir[i])
 
 

@@ -9,7 +9,7 @@ requirements = [
 VERSION = '0.0.1'
 
 setup(
-    name='SSNA',
+    name='SignedNetZoo',
     version=VERSION,
     url='https://github.com/vishwakftw/CS6270-TDBMS',
     description='Datasets, tools and prediction algorithms for signed social networks',

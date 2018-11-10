@@ -1,7 +1,7 @@
 """
-Smoke test for datasets in SSNA.
+Smoke test for datasets in SignedNetZoo.
 """
-import SSNA
+import SignedNetZoo
 import shutil
 import unittest
 import networkx as nx
@@ -14,7 +14,7 @@ class TestDataset(unittest.TestCase):
 
         root = './data'
         # First test without split
-        dataset = getattr(SSNA.datasets, dataset_name)(root=root)
+        dataset = getattr(SignedNetZoo.datasets, dataset_name)(root=root)
         G = dataset.graph
         self.assertIsInstance(G, nx.DiGraph)
         n_edges = G.number_of_edges()
@@ -23,7 +23,7 @@ class TestDataset(unittest.TestCase):
 
         for split in [0.7, 0.8, 0.9]:
             # Now test with splits
-            dataset = getattr(SSNA.datasets, dataset_name)(root=root, split=split)
+            dataset = getattr(SignedNetZoo.datasets, dataset_name)(root=root, split=split)
             G_train, G_test = dataset.graph
             self.assertIsInstance(G_train, nx.DiGraph)
             self.assertIsInstance(G_test, nx.DiGraph)

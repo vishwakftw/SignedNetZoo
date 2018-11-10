@@ -1,7 +1,6 @@
-## SSNA
+## SignedNetZoo
 
-+ SSNA (short for **S**igned **S**ocial **N**etwork **A**nalysis) is a package consisting of datasets, operations and
-  prediction algorithms for signed graphs.
++ `SignedNetZoo` is a package consisting of datasets, operations and prediction algorithms for signed graphs.
 
 + This package is the first ever open-source package dedicated to signed social network analysis.
 
@@ -12,4 +11,4 @@
 python setup.py install
 ```
 
-##### This was made as a part of project for CS6270 : Topics in Database Management Systems offered in Fall 2018.
+##### This was designed for a project for CS6270 : Topics in Database Management Systems offered in Fall 2018.

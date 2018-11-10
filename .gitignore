@@ -11,4 +11,4 @@ __pycache__/
 # Build files
 build/
 dist/
-SSNA.egg-info/
+SignedNetZoo.egg-info/
