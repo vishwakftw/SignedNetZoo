@@ -12,7 +12,7 @@ The current directory has a list of various signed directed social network graph
 
 ### Description of the Datasets
 
-- **[Slashdot Zoo:](http://konect.cc/networks/slashdot-zoo/)** This is the signed social network of users of the technology news site Slashdot (slashdot.org), connected by directed "friend" and "foe" relations. The "friend" and "foe" labels are used on Slashdot to mark users, and influence the scores as seen by each user. For instance, If user A marks user B as a foe, the score of user B's posts will be decreased as shown to user A. 
+- **[Slashdot Zoo:](http://konect.cc/networks/slashdot-zoo/)** This is the signed social network of users of the technology news site Slashdot (slashdot.org), connected by directed "friend" and "foe" relations. The "friend" and "foe" labels are used on Slashdot to mark users, and influence the scores as seen by each user. For instance, If user A marks user B as a foe, the score of user B's posts will be decreased as shown to user A.
 
 - **[Bitcoin OTC Trust Weighted Signed Network:](https://snap.stanford.edu/data/soc-sign-bitcoin-otc.html)** This is who-trusts-whom network of people who trade using Bitcoin on a platform called Bitcoin OTC. Since Bitcoin users are anonymous, there is a need to maintain a record of users' reputation to prevent transactions with fraudulent and risky users. Members of Bitcoin OTC rate other members in a scale of -10 (total distrust) to +10 (total trust) in steps of 1. This is the first explicit weighted signed directed network available for research.
 
@@ -21,3 +21,5 @@ The current directory has a list of various signed directed social network graph
 - **[Wikipedia Requests for Adminship:](https://snap.stanford.edu/data/wiki-RfA.html)** For a Wikipedia editor to become an administrator, a request for adminship (RfA) must be submitted, either by the candidate or by another community member. Subsequently, any Wikipedia member may cast a supporting, neutral, or opposing vote.
 
 - **[WikiSigned:](http://konect.uni-koblenz.de/networks/wikisigned-k2)** This undirected signed network contains interpreted interactions between the users of the English Wikipedia that have edited pages about politics. The dataset is based on a set of 563 articles from the politics domain of the English Wikipedia.
+
+- **[Twitter - Sentiment140 Dataset:](https://www.kaggle.com/kazanova/sentiment140)**  This dataset contains 1,600,000 tweets extracted using the Twitter API. The tweets have been annotated (0 = negative, 2 = neutral, 4 = positive) and they can be used to detect sentiment. This dataset is converted into a directed graph as described in [`SignedNetZoo/twitter`](https://github.com/vishwakftw/SignedNetZoo/tree/master/SignedNetZoo/twitter) to fit our requirements.
