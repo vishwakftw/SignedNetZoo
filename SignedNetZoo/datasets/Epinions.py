@@ -48,8 +48,13 @@ class Epinions(object):
     def _get_graph(self):
         print("- Obtaining Networkx Graph...")
 
-        if os.path.isfile(os.path.join(self.proc_path, self.pickle_name)):
+        if self.split is None and os.path.isfile(os.path.join(self.proc_path, self.pickle_name)):
             print("- Graph ready.")
+        elif os.path.isfile(os.path.join(self.proc_path,
+                                         self.pickle_name + '.train_{}'.format(self.split))) or \
+             os.path.isfile(os.path.join(self.proc_path,
+                                         self.pickle_name + '.test_{}'.format(1 - self.split))):
+            print("- Graphs ready.")
         else:
             print("- Pre-processing...")
             # Import dataset as a Pandas DataFrame, check edge count.
@@ -76,8 +81,10 @@ class Epinions(object):
                 random.shuffle(tuples)
                 train_len = int(self.split * len(tuples))
 
-                self._get_graph_impl(tuples[: train_len], node_map.values(), suffix='train')
-                self._get_graph_impl(tuples[train_len:], node_map.values(), suffix='test')
+                self._get_graph_impl(tuples[: train_len], node_map.values(),
+                                     suffix='train_{}'.format(self.split))
+                self._get_graph_impl(tuples[train_len:], node_map.values(),
+                                     suffix='test_{}'.format(1 - self.split))
 
                 print("- Both Graphs saved.")
 
@@ -97,5 +104,9 @@ class Epinions(object):
             return nx.read_gpickle(os.path.join(self.proc_path, self.pickle_name))
 
         else:
-            return (nx.read_gpickle(os.path.join(self.proc_path, self.pickle_name + '.train')),
-                    nx.read_gpickle(os.path.join(self.proc_path, self.pickle_name + '.test')))
+            return (nx.read_gpickle(
+                        os.path.join(self.proc_path,
+                                     self.pickle_name + '.train_{}'.format(self.split))),
+                    nx.read_gpickle(
+                        os.path.join(self.proc_path,
+                                     self.pickle_name + '.test_{}'.format(1 - self.split))))

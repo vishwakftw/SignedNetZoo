@@ -6,9 +6,11 @@
 
 ### Installation
 
-+ Currently this can be installed from source. Open a terminal window and run the command
-```
-python setup.py install
-```
++ To install, clone this repository using HTTPS / SSH.
++ Go to the directory and run `python setup.py install`.
+
+### Sample usage
+
++ `examples` consists of a link prediction script for datasets.
 
 ##### This was designed for a project for CS6270 : Topics in Database Management Systems offered in Fall 2018.

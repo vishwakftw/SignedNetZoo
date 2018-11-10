@@ -16,7 +16,7 @@ setup(
     description='Datasets, tools and prediction algorithms for signed social networks',
     license='MIT',
 
-    packages=find_packages(exclude=('tests',)),
+    packages=find_packages(exclude=('tests', 'examples')),
 
     zip_safe=True,
     install_requires=requirements,

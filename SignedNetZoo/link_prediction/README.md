@@ -7,8 +7,6 @@
   + *Majority based voting* : From the graph given to us, we find the most frequently occuring sign and predict it. This is an uninformative algorithm.
   + *Symmetric prediction* : Given a graph, we find the symmetric (undirected) version of it, and predict the link in the results adjacency matrix. If neither link is present then we resort to majority based voting, and provide a default link to predict.
   + *Transitive prediction* : Given a signed graph, we find the square of the adjacency matrix. This will hence take into account the multiplicative transitivity, and provide a prediction based on this.
-  + *Radius-based Transitive prediction* : This method is similar to Transitive prediction, only that we consider the adjacency matrix raised to the power (`radius` - 1) to incorporate the nature of large connections between two nodes.
-
 
 ### Algebraic Similarity
 + These methods are based on some graph theoretic concepts as well as dimensionality reduction techniques:

@@ -87,7 +87,7 @@ def exponential_adjacency_dim_reduce(G, dim, required_links, symmetric=False):
     if symmetric:
         A = get_symmetric_adjacency_matrix(G)
     else:
-        A = get_adjacency_matrix(G)
+        A, _ = get_adjacency_matrix(G)
     A = A.astype(float)
     EA = sspl.expm(A)
     u, s, v = sspl.svds(EA, k=dim)

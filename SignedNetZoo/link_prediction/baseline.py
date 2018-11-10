@@ -52,7 +52,7 @@ def undirected_prediction(G, required_links, default=None):
             if G[pair[1]][pair[0]]['weight'] > 0:
                 preds.append(1)
             else:
-                preds.append(0)
+                preds.append(-1)
         else:
             if default is None:
                 if edges_majority > 0:
@@ -106,56 +106,8 @@ def mult_trans_prediction(G, required_links, default=None):
             else:
                 raise ValueError("Invalid argument for default")
         else:
-            preds.append(sq_A[pair[0], pair[1]])
-    return preds
-
-
-def mult_trans_prediction_with_radius(G, required_links, default=None):
-    """
-    Function to predict links using squared adjacency matrix and multiplicative
-    transitivity property. The predictions for link from i to j is merely the i,j th
-    entry of the adjacency matrix raised to the power of floor(radius)
-
-    Args:
-        G : Graph to consider as training data
-        required_links : List of tuples (a, b) where (a, b) denotes the outgoing
-                         edge from `a` to `b`.
-        default : Values from 'positive', 'negative', None. If 'positive', then the
-                  default link is +1, and if 'negative', then the default link is -1.
-                  If None, then the default link is considered as the majority.
-
-    Returns:
-        List of {+1, -1} based on the properties of the graph
-    """
-    if default is None:
-        edges_majority = sum(list(nx.get_edge_attributes(G, 'weight').values()))
-
-    preds = []
-    A, _ = get_adjacency_matrix(G)
-    A = A.astype(float)
-    radius = nx.radius(G)
-    pow_A = None
-    if radius == 1:
-        pow_A = ssp.eye(A.shape[0])
-    elif radius > 1:
-        pow_A = A
-        while radius - 2 > 0:
-            pow_A = pow_A * A
-            radius -= 1
-
-    for pair in required_links:
-        if pow_A[pair[0], pair[1]] == 0:
-            if default is None:
-                if edges_majority > 0:
-                    preds.append(1)
-                else:
-                    preds.append(-1)
-            elif default == 'positive':
+            if sq_A[pair[0], pair[1]] > 0:
                 preds.append(1)
-            elif default == 'negative':
-                preds.append(-1)
             else:
-                raise ValueError("Invalid argument for default")
-        else:
-            preds.append(pow_A[pair[0], pair[1]])
+                preds.append(-1)
     return preds
