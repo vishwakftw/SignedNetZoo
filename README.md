@@ -1,4 +1,4 @@
-## SignedNetZoo
+## SignedNetZoo [![Build Status](https://travis-ci.org/vishwakftw/SignedNetZoo.svg?branch=master)](https://travis-ci.org/vishwakftw/SignedNetZoo)
 
 + `SignedNetZoo` is a package consisting of datasets, operations and prediction algorithms for signed graphs.
 
