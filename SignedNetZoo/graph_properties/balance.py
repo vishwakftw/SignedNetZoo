@@ -82,7 +82,7 @@ def is_balanced(graph_obj, meta_data=False):
                 else:
                     for node in sets[set_]:
                         Y.add(node)
-            split = (X, Y)
+            split = {frozenset(X), frozenset(Y)}
 
         metas = {}
         metas['num_original_sets'] = num_labels

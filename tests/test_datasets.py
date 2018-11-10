@@ -23,7 +23,7 @@ class TestDataset(unittest.TestCase):
 
         for split in [0.7, 0.9]:
             # Now test with splits
-            dataset = getattr(SignedNetZoo.datasets, dataset_name)(root=root, split=0.7)
+            dataset = getattr(SignedNetZoo.datasets, dataset_name)(root=root, split=split)
             G_train, G_test = dataset.graph
             self.assertIsInstance(G_train, nx.DiGraph)
             self.assertIsInstance(G_test, nx.DiGraph)
