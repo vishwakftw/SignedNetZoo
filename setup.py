@@ -4,6 +4,7 @@ requirements = [
     'networkx',
     'numpy',
     'scipy',
+    'tqdm',
 ]
 
 VERSION = '0.0.1'
