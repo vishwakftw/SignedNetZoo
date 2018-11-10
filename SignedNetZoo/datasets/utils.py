@@ -1,6 +1,9 @@
 from tqdm import tqdm
 
-import urllib.request
+try:
+    import urllib.request
+except ImportError:
+    from six.moves import urllib
 import os
 
 

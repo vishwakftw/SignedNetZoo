@@ -1,5 +1,5 @@
 """
-Smoke test for datasets in SignedNetZoo.
+Smoke test for datasets in SignedNetZoo. Only testing on small datasets.
 """
 import SignedNetZoo
 import shutil
@@ -23,7 +23,7 @@ class TestDataset(unittest.TestCase):
 
         for split in [0.7, 0.8, 0.9]:
             # Now test with splits
-            dataset = getattr(SignedNetZoo.datasets, dataset_name)(root=root, split=split)
+            dataset = getattr(SignedNetZoo.datasets, dataset_name)(root=root, split=0.7)
             G_train, G_test = dataset.graph
             self.assertIsInstance(G_train, nx.DiGraph)
             self.assertIsInstance(G_test, nx.DiGraph)
@@ -47,12 +47,6 @@ class TestDataset(unittest.TestCase):
 
     def test_slashdotzoo(self):
         self._test_dataset(self, 'SlashdotZoo')
-
-    def test_twitter(self):
-        self._test_dataset(self, 'Twitter')
-
-    def test_wikipedia(self):
-        self._test_dataset(self, 'Wikipedia')
 
     def test_wikisigned(self):
         self._test_dataset(self, 'WikiSigned')

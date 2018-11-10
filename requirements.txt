@@ -1,4 +1,5 @@
 networkx
+pandas
 numpy
 scipy
 tqdm

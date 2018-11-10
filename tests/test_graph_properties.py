@@ -99,7 +99,7 @@ class TestBalanced(unittest.TestCase):
     def test_is_balanced(self):
         results_undir = []
         expected_results = [(True, {'strength': 'strong',
-                                    'possible_split': (['E', 'D'], ['A', 'B', 'C'])}),
+                                    'possible_split': ({'E', 'D'}, {'A', 'B', 'C'})}),
                             (False, None),
                             (True, {'strength': 'weak',
                                     'possible_split': None})]

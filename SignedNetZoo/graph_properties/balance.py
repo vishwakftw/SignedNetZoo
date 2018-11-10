@@ -73,15 +73,15 @@ def is_balanced(graph_obj, meta_data=False):
         split = None
         if strong:
             coloring = bipartite.color(set_graph)
-            X = []
-            Y = []
+            X = set()
+            Y = set()
             for set_ in coloring:
                 if coloring[set_] == 0:
                     for node in sets[set_]:
-                        X.append(node)
+                        X.add(node)
                 else:
                     for node in sets[set_]:
-                        Y.append(node)
+                        Y.add(node)
             split = (X, Y)
 
         metas = {}
