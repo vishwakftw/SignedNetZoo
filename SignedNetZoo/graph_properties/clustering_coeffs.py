@@ -18,4 +18,4 @@ def sign_clustering_coeff(graph_obj):
 def relative_sign_clustering_coeff(graph_obj):
     C = clustering_coeff(graph_obj)
     C_s = sign_clustering_coeff(graph_obj)
-    return C / C_s
+    return C_s / C
