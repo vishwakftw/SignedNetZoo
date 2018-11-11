@@ -1,3 +1,6 @@
+from ..graph_properties import get_adjacency_matrix
+
+import numpy as np
 import networkx as nx
 
 
@@ -62,3 +65,29 @@ def negativerank(G, beta, alpha=0.8, max_iter=100):
     for key in SR.keys():
         NR[key] = SR[key] - beta * PR[key]
     return NR
+
+
+def exponentialrank(G, mu=0.2, max_iter=100):
+    """
+    Function to get the ranking of nodes in a graph by Exponential Ranking,
+    proposed by Traag et al, "Exponential Ranking: taking into account negative links"
+
+    Arguments:
+        G : graph to compute Exponential Rank
+        mu : mu parameter in the algorithm. Default: 0.2
+        max_iter : maximum number of iterations to perform the power iteration to obtain
+                   an approximation of the steady state vector
+                   Default: 100
+
+    Returns:
+        A dictionary with keys as nodes and values as PageRank values
+    """
+    adj, _ = get_adjacency_matrix(G)
+    adj = adj.T
+    p = np.full(adj.shape[0], 1 / adj.shape[0])
+    for i in range(max_iter):
+        k = adj.dot(p)
+        p = np.exp(k / mu)
+        p = p / p.sum()
+    final_vals = adj.dot(p)
+    return {i: final_vals[i] for i in range(0, adj.shape[0])}
