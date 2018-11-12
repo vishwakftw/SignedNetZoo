@@ -1,7 +1,4 @@
 from .utils import constrained_bfs
-from networkx.algorithms import bipartite
-
-import networkx as nx
 
 
 # check if a graph is balanced
@@ -20,6 +17,9 @@ def is_balanced(graph_obj, meta_data=False):
     Returns:
         A two tuple: (bool, meta-data dict). The meta-data dict is None, if meta_data is False
     """
+    from networkx import Graph
+    from networkx.algorithms import bipartite
+
     if graph_obj.is_directed():
         undirected_graph_obj = graph_obj.to_undirected()
     else:
@@ -36,7 +36,7 @@ def is_balanced(graph_obj, meta_data=False):
 
     num_labels = cur_label
 
-    set_graph = nx.Graph()
+    set_graph = Graph()
     set_graph.add_nodes_from([x for x in range(num_labels)])
 
     # check for mutual antagonism between sets and mutual friendship inside sets

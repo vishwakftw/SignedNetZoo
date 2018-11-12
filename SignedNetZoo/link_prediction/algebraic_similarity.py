@@ -1,7 +1,5 @@
 from ..graph_properties import get_adjacency_matrix, get_symmetric_adjacency_matrix
 
-import scipy.sparse.linalg as sspl
-
 
 def adjacency_dim_reduce(G, dim, required_links):
     """
@@ -20,9 +18,11 @@ def adjacency_dim_reduce(G, dim, required_links):
     Returns:
         List of {+1, -1} based on the properties of the graph
     """
+    from scipy.sparse.linalg import svds
+
     A, _ = get_adjacency_matrix(G)
     A = A.astype(float)
-    u, s, v = sspl.svds(A, k=dim)
+    u, s, v = svds(A, k=dim)
     preds = []
     for pair in required_links:
         i, j = pair
@@ -51,9 +51,11 @@ def symmetric_adjacency_dim_reduce(G, dim, required_links):
     Returns:
         List of {+1, -1} based on the properties of the graph
     """
+    from scipy.sparse.linalg import eigsh
+
     A = get_symmetric_adjacency_matrix(G)
     A = A.astype(float)
-    w, v = sspl.eigsh(A, k=dim)
+    w, v = eigsh(A, k=dim)
     preds = []
     for pair in required_links:
         i, j = pair
@@ -84,21 +86,24 @@ def exponential_adjacency_dim_reduce(G, dim, required_links, symmetric=False):
     Returns:
         List of {+1, -1} based on the properties of the graph
     """
+    import numpy as np
+    from scipy.sparse.linalg import eigsh, expm, svds
+
     if symmetric:
         A = get_symmetric_adjacency_matrix(G)
     else:
         A, _ = get_adjacency_matrix(G)
     A = A.astype(float).tocsc()
     if not symmetric:
-        EA = sspl.expm(A)
-        u, s, v = sspl.svds(EA, k=dim)
+        EA = expm(A)
+        u, s, v = svds(EA, k=dim)
     else:
-        w, v = sspl.eigsh(A, k=dim)
+        w, v = eigsh(A, k=dim)
         w = np.exp(w)
         s = w.copy()
         u = v.copy()
         v = v.T.copy()
-    u, s, v = sspl.svds(EA, k=dim)
+    u, s, v = svds(EA, k=dim)
     preds = []
     for pair in required_links:
         i, j = pair

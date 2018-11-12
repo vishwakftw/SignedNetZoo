@@ -1,7 +1,5 @@
 from ..graph_properties import get_adjacency_matrix
 
-import networkx as nx
-
 
 def uninformative_prediction(G, required_links):
     """
@@ -17,7 +15,8 @@ def uninformative_prediction(G, required_links):
     Returns:
         List of {+1, -1} based on the properties of the graph
     """
-    edges_weights = list(nx.get_edge_attributes(G, 'weight').values())
+    from networkx import get_edge_attributes
+    edges_weights = list(get_edge_attributes(G, 'weight').values())
     edges_parity = [1 if w > 0 else -1 for w in edges_weights]
     if sum(edges_parity) > 0:
         return [1 for _ in required_links]
@@ -42,8 +41,9 @@ def undirected_prediction(G, required_links, default=None):
     Returns:
         List of {+1, -1} based on the properties of the graph
     """
+    from networkx import get_edge_attributes
     if default is None:
-        edges_majority = sum(list(nx.get_edge_attributes(G, 'weight').values()))
+        edges_majority = sum(list(get_edge_attributes(G, 'weight').values()))
 
     preds = []
     for pair in required_links:
@@ -84,8 +84,9 @@ def mult_trans_prediction(G, required_links, default=None):
     Returns:
         List of {+1, -1} based on the properties of the graph
     """
+    from networkx import get_edge_attributes
     if default is None:
-        edges_majority = sum(list(nx.get_edge_attributes(G, 'weight').values()))
+        edges_majority = sum(list(get_edge_attributes(G, 'weight').values()))
 
     preds = []
     A, _ = get_adjacency_matrix(G)

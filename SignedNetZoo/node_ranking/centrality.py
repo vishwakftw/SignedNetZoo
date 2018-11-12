@@ -1,8 +1,5 @@
 from ..graph_properties import get_adjacency_matrix
 
-import numpy as np
-import networkx as nx
-
 
 def pagerank(G, signed=True, symmetric=False, alpha=0.8, max_iter=100):
     """
@@ -21,6 +18,8 @@ def pagerank(G, signed=True, symmetric=False, alpha=0.8, max_iter=100):
     Returns:
         A dictionary with keys as nodes and values as PageRank values
     """
+    from networkx import link_analysis
+
     # By default, the graph is assumed to be signed and asymmetric
     if not signed:
         for u, v, d in G.edges(data=True):
@@ -37,7 +36,7 @@ def pagerank(G, signed=True, symmetric=False, alpha=0.8, max_iter=100):
                     else:
                         G.add_edge(nodes[j], nodes[i], weight=G[nodes[i]][nodes[j]]['weight'])
 
-    return nx.link_analysis.pagerank_scipy(G, alpha=alpha, max_iter=max_iter)
+    return link_analysis.pagerank_scipy(G, alpha=alpha, max_iter=max_iter)
 
 
 def negativerank(G, beta, alpha=0.8, max_iter=100):
@@ -82,12 +81,14 @@ def exponentialrank(G, mu=0.2, max_iter=100):
     Returns:
         A dictionary with keys as nodes and values as PageRank values
     """
+    from numpy import full, exp
+
     adj, _ = get_adjacency_matrix(G)
     adj = adj.T
-    p = np.full(adj.shape[0], 1 / adj.shape[0])
+    p = full(adj.shape[0], 1 / adj.shape[0])
     for i in range(max_iter):
         k = adj.dot(p)
-        p = np.exp(k / mu)
+        p = exp(k / mu)
         p = p / p.sum()
     final_vals = adj.dot(p)
     return {i: final_vals[i] for i in range(0, adj.shape[0])}
